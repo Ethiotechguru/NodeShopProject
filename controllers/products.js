@@ -1,4 +1,4 @@
-const products = [];
+const Product = require('../models/product')
 exports.getAddProducts = (req, res, next)=>{
     res.render('add-product.ejs', 
             {
@@ -8,12 +8,13 @@ exports.getAddProducts = (req, res, next)=>{
 }
 
 exports.postProducts = (req, res, next)=>{
-    console.log(req.body.title);
-    products.push({title:req.body.title, price:req.body.price})
+    const product = new Product(req.body.title, req.body.price);
+    product.save();
     res.redirect('/')
-    console.log(products);
+    console.log(product);
 }
 
 exports.getProducts = (req, res, next)=>{
+    const products = Product.fetchAll();
     res.render("shop.ejs", {pageTitle:"Products", prods:products, path:'/shop'})
 }
